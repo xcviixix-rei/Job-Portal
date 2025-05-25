@@ -1,0 +1,15 @@
+runtime: python312
+entrypoint: gunicorn -b :$PORT main:app
+
+handlers:
+# Serve static assets (CSS, JS, images if any local ones)
+# URL paths for static files need to be explicitly defined or served via Flask
+# For simplicity with Flask serving static, we only need the entrypoint.
+# Flask will handle routing.
+- url: /.*  # This catch-all route is handled by the Flask app
+  script: auto
+  secure: always # Redirect HTTP to HTTPS
+
+# - url: /favicon.ico
+#   static_files: favicon.ico
+#   upload: favicon.ico

@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+pip-selfcheck.json
+pip-log.txt
+
+# IDE / OS specific
+.idea/
+.vscode/
+*.DS_Store
+Thumbs.db
+
+# Google Cloud SDK files (optional, but good practice if you store config locally)
+.gcloud/

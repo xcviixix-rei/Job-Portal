@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng tin tuyển dụng</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" class="logo" onclick="goHome();return false;" style="text-decoration:none; color:inherit;">
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Logo">
+            <span>JobPortal</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#">Việc làm</a></li>
+            <li><a href="#">Công ty</a></li>
+            <li><a href="#">Đăng nhập</a></li>
+            <li><a class="btn-employer" href="employer.html">Đăng tin tuyển dụng</a></li>
+        </ul>
+    </nav>
+
+    <section class="section" style="max-width:540px; margin-top: 40px;">
+        <h2>Đăng tin tuyển dụng</h2>
+        <form id="employerForm" class="form-box">
+            <label>Tên công ty</label>
+            <input type="text" name="company" required>
+            <label>Vị trí tuyển dụng</label>
+            <input type="text" name="position" required>
+            <label>Địa điểm làm việc</label>
+            <input type="text" name="location" required>
+            <label>Mức lương</label>
+            <input type="text" name="salary">
+            <label>Loại hình công việc</label>
+            <select name="jobtype">
+                <option value="Full-time">Full-time</option>
+                <option value="Part-time">Part-time</option>
+                <option value="Remote">Remote</option>
+            </select>
+            <label>Mô tả công việc</label>
+            <textarea name="description" rows="4" required></textarea>
+            <button type="submit" class="post-btn" style="width:100%; margin-top: 16px;">Đăng tin</button>
+        </form>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2025 JobPortal. Liên hệ: jobportal@gmail.com | Hotline: 0988.123.456</p>
+        </div>
+    </footer>
+        <!-- Trong <script> của employer.html -->
+    <script>
+        function goHome() {
+            window.location.href = "homePage.html";
+        }
+        document.getElementById("employerForm").addEventListener("submit", function(e){
+            e.preventDefault();
+            // Basic validation example
+            const company = document.querySelector('input[name="company"]').value;
+            const position = document.querySelector('input[name="position"]').value;
+            const description = document.querySelector('textarea[name="description"]').value;
+
+            if (!company || !position || !description) {
+                alert("Vui lòng điền đầy đủ thông tin bắt buộc: Tên công ty, Vị trí, Mô tả.");
+                return;
+            }
+            alert("Tin tuyển dụng đã được gửi thành công! (Demo: Chưa lưu lên máy chủ)");
+            // Optionally, redirect or clear form
+            // window.location.href = "trangchu.html";
+            e.target.reset();
+        });
+    </script>
+</body>
+</html>

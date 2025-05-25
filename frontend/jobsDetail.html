@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiết việc làm</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .job-detail-container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 3px 12px #d4e6fc44;
+            margin-top: 20px;
+        }
+        .job-detail-container h1 {
+            font-size: 2em;
+            color: #2062ad;
+            margin-bottom: 10px;
+        }
+        .job-detail-container .company-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .job-detail-container .company-info img {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            margin-right: 15px;
+            object-fit: contain;
+            background: #f0f4f8;
+        }
+        .job-detail-container .company-info div {
+            font-size: 1.1em;
+        }
+        .job-detail-container .company-info .company-name {
+            font-weight: bold;
+            color: #2267c6;
+        }
+        .job-detail-container .job-meta span {
+            display: inline-block;
+            margin-right: 15px;
+            color: #555;
+            font-size: 0.95em;
+            margin-bottom: 15px;
+        }
+        .job-detail-container .description-title {
+            font-size: 1.5em;
+            color: #2062ad;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .job-detail-container .description-content {
+            line-height: 1.7;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="trangchu.html" class="logo" style="text-decoration:none; color:inherit;">
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Logo">
+            <span>JobPortal</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="trangchu.html#jobs">Việc làm</a></li>
+            <li><a href="trangchu.html#companies">Công ty</a></li>
+            <li><a href="#">Đăng nhập</a></li>
+            <li><a class="btn-employer" href="employer.html">Đăng tin tuyển dụng</a></li>
+        </ul>
+    </nav>
+
+    <section class="section" style="max-width:800px; margin-top: 40px;">
+        <div id="jobDetailContainer" class="job-detail-container">
+            <!-- Job details will be loaded here by JavaScript -->
+            <p>Đang tải chi tiết việc làm...</p>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2025 JobPortal. Liên hệ: jobportal@gmail.com | Hotline: 0988.123.456</p>
+        </div>
+    </footer>
+
+    <script src="jobs_data.js"></script>
+    <script>
+        function goHome() {
+            window.location.href = "trangchu.html";
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const jobId = parseInt(params.get('id'));
+            const job = jobsData.find(j => j.id === jobId);
+            const container = document.getElementById('jobDetailContainer');
+
+            if (job) {
+                container.innerHTML = `
+                    <h1>${job.title}</h1>
+                    <div class="company-info">
+                        <img src="${job.logo || 'https://via.placeholder.com/60'}" alt="${job.company} logo">
+                        <div>
+                            <div class="company-name">${job.company}</div>
+                            <div>${job.location}</div>
+                        </div>
+                    </div>
+                    <div class="job-meta">
+                        <span><strong>Mức lương:</strong> ${job.salary}</span>
+                        <span><strong>Loại hình:</strong> <span class="tag ${getJobTypeClass(job.type)}">${job.type}</span></span>
+                    </div>
+                    <h3 class="description-title">Mô tả công việc</h3>
+                    <div class="description-content">
+                        ${job.description.replace(/\n/g, '<br>')}
+                    </div>
+                    <button 
+                        class="apply-btn" 
+                        style="width:auto; margin-top: 25px; padding: 10px 25px; font-size: 1.1em;"
+                        onclick="window.location.href='apply.html?job_title=${encodeURIComponent(job.title)}'">
+                        Ứng tuyển ngay
+                    </button>
+                `;
+            } else {
+                container.innerHTML = '<p>Không tìm thấy thông tin việc làm.</p>';
+            }
+        });
+    </script>
+</body>
+</html>

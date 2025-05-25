@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Ứng tuyển việc làm</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" class="logo" onclick="goHome();return false;" style="text-decoration:none; color:inherit;">
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Logo" >
+            <span>JobPortal</span>
+        </a>
+            <!-- Trong <script> của apply.html -->
+        <script>
+            function goHome() {
+                window.location.href = "homePage.html";
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const params = new URLSearchParams(window.location.search);
+                const jobTitle = params.get('job_title');
+                if (jobTitle) {
+                    const positionInput = document.querySelector('input[name="position"]');
+                    if (positionInput) {
+                        positionInput.value = decodeURIComponent(jobTitle);
+                    }
+                }
+            });
+
+            document.getElementById("applyForm").addEventListener("submit", function(e){
+                e.preventDefault();
+                // Basic validation example
+                const fullname = document.querySelector('input[name="fullname"]').value;
+                const email = document.querySelector('input[name="email"]').value;
+                const cvfile = document.querySelector('input[name="cvfile"]').value;
+
+                if (!fullname || !email || !cvfile) {
+                    alert("Vui lòng điền đầy đủ thông tin bắt buộc: Họ tên, Email và CV.");
+                    return;
+                }
+                alert("Bạn đã nộp hồ sơ thành công! (Demo: Dữ liệu chưa gửi về máy chủ)");
+                // Optionally, redirect or clear form
+                // window.location.href = "trangchu.html";
+                e.target.reset(); 
+            });
+        </script>
+        <ul class="nav-links">
+            <li><a href="#">Việc làm</a></li>
+            <li><a href="#">Công ty</a></li>
+            <li><a href="#">Đăng nhập</a></li>
+            <li><a class="btn-employer" href="employer.html">Đăng tin tuyển dụng</a></li>
+        </ul>
+    </nav>
+
+    <section class="section" style="max-width:480px; margin-top: 40px;">
+        <h2>Ứng tuyển việc làm</h2>
+        <form id="applyForm" class="form-box" enctype="multipart/form-data">
+            <label>Họ và tên</label>
+            <input type="text" name="fullname" required>
+            <label>Email</label>
+            <input type="email" name="email" required>
+            <label>Số điện thoại</label>
+            <input type="text" name="phone">
+            <label>Vị trí ứng tuyển</label>
+            <input type="text" name="position" required>
+            <label>Tải lên CV (PDF, DOCX)</label>
+            <input type="file" name="cvfile" accept=".pdf,.doc,.docx" required>
+            <label>Ghi chú (tùy chọn)</label>
+            <textarea name="note" rows="3"></textarea>
+            <button type="submit" class="apply-btn" style="width:100%; margin-top: 16px;">Nộp hồ sơ</button>
+        </form>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2025 JobPortal. Liên hệ: jobportal@gmail.com | Hotline: 0988.123.456</p>
+        </div>
+    </footer>
+    <script>
+        document.getElementById("applyForm").addEventListener("submit", function(e){
+            e.preventDefault();
+            alert("Bạn đã nộp hồ sơ thành công! (Demo: Dữ liệu chưa gửi về máy chủ)");
+        });
+    </script>
+</body>
+</html>
