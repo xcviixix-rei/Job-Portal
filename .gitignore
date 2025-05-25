@@ -15,5 +15,11 @@ pip-log.txt
 *.DS_Store
 Thumbs.db
 
-# Google Cloud SDK files (optional, but good practice if you store config locally)
+# Google Cloud SDK files
 .gcloud/
+
+# Node.js
+backend/node_modules/
+
+# Firestore
+backend/config/serviceAccountKey.json
