@@ -54,6 +54,26 @@ body {
     color: #ffd65b;
 }
 
+.job-card h3,
+.job-card .company,
+.job-card .location,
+.job-card .salary,
+.job-card .tag {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    cursor: default;
+}
+
+.job-card h3 a {
+    user-select: text;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    cursor: pointer;
+}
+
 .btn-employer {
     background: #ffd65b;
     color: #2062ad !important;

@@ -47,27 +47,6 @@
             <p>© 2025 JobPortal. Liên hệ: jobportal@gmail.com | Hotline: 0988.123.456</p>
         </div>
     </footer>
-        <!-- Trong <script> của employer.html -->
-    <script>
-        function goHome() {
-            window.location.href = "homePage.html";
-        }
-        document.getElementById("employerForm").addEventListener("submit", function(e){
-            e.preventDefault();
-            // Basic validation example
-            const company = document.querySelector('input[name="company"]').value;
-            const position = document.querySelector('input[name="position"]').value;
-            const description = document.querySelector('textarea[name="description"]').value;
-
-            if (!company || !position || !description) {
-                alert("Vui lòng điền đầy đủ thông tin bắt buộc: Tên công ty, Vị trí, Mô tả.");
-                return;
-            }
-            alert("Tin tuyển dụng đã được gửi thành công! (Demo: Chưa lưu lên máy chủ)");
-            // Optionally, redirect or clear form
-            // window.location.href = "trangchu.html";
-            e.target.reset();
-        });
-    </script>
+    <script src="employer.js"></script>
 </body>
 </html>

@@ -11,40 +11,6 @@
             <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Logo" >
             <span>JobPortal</span>
         </a>
-            <!-- Trong <script> của apply.html -->
-        <script>
-            function goHome() {
-                window.location.href = "homePage.html";
-            }
-
-            document.addEventListener('DOMContentLoaded', () => {
-                const params = new URLSearchParams(window.location.search);
-                const jobTitle = params.get('job_title');
-                if (jobTitle) {
-                    const positionInput = document.querySelector('input[name="position"]');
-                    if (positionInput) {
-                        positionInput.value = decodeURIComponent(jobTitle);
-                    }
-                }
-            });
-
-            document.getElementById("applyForm").addEventListener("submit", function(e){
-                e.preventDefault();
-                // Basic validation example
-                const fullname = document.querySelector('input[name="fullname"]').value;
-                const email = document.querySelector('input[name="email"]').value;
-                const cvfile = document.querySelector('input[name="cvfile"]').value;
-
-                if (!fullname || !email || !cvfile) {
-                    alert("Vui lòng điền đầy đủ thông tin bắt buộc: Họ tên, Email và CV.");
-                    return;
-                }
-                alert("Bạn đã nộp hồ sơ thành công! (Demo: Dữ liệu chưa gửi về máy chủ)");
-                // Optionally, redirect or clear form
-                // window.location.href = "trangchu.html";
-                e.target.reset(); 
-            });
-        </script>
         <ul class="nav-links">
             <li><a href="#">Việc làm</a></li>
             <li><a href="#">Công ty</a></li>
@@ -77,11 +43,6 @@
             <p>© 2025 JobPortal. Liên hệ: jobportal@gmail.com | Hotline: 0988.123.456</p>
         </div>
     </footer>
-    <script>
-        document.getElementById("applyForm").addEventListener("submit", function(e){
-            e.preventDefault();
-            alert("Bạn đã nộp hồ sơ thành công! (Demo: Dữ liệu chưa gửi về máy chủ)");
-        });
-    </script>
+    <script src="apply.js"></script>
 </body>
 </html>
