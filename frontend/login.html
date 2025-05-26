@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng nhập - JobPortal</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="authStyles.css"> <!-- New CSS file for auth pages -->
+</head>
+<body>
+    <nav class="navbar">
+        <a href="homePage.html" class="logo" style="text-decoration:none; color:inherit;">
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Logo">
+            <span>JobPortal</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="homePage.html#jobs">Việc làm</a></li>
+            <li><a href="homePage.html#companies">Công ty</a></li>
+            <li><a class="btn-employer" href="employer.html">Đăng tin tuyển dụng</a></li>
+        </ul>
+    </nav>
+
+    <section class="section auth-section">
+        <div class="auth-container">
+            <h2>Đăng nhập</h2>
+            <form id="loginForm" class="form-box">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+                
+                <label for="password">Mật khẩu</label>
+                <input type="password" id="password" name="password" required>
+                
+                <button type="submit" class="auth-btn">Đăng nhập</button>
+                <p class="auth-switch">Chưa có tài khoản? <a href="register.html">Đăng ký ngay</a></p>
+            </form>
+            <div id="loginMessage" class="auth-message"></div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2025 JobPortal. Liên hệ: jobportal@gmail.com | Hotline: 0988.123.456</p>
+        </div>
+    </footer>
+    <script src="auth.js"></script>
+    <script src="navbar.js"></script>
+</body>
+</html>

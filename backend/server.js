@@ -1,7 +1,10 @@
 const express = require('express');
-const { Firestore, Timestamp } = require('@google-cloud/firestore'); // Import Timestamp
+const { Firestore, Timestamp } = require('@google-cloud/firestore');
 const cors = require('cors');
 const path = require('path');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const authenticateToken = require('./middleware/authMiddleware');
 
 const app = express();
 const port = process.env.PORT || 8080; // Port cho backend API
@@ -14,13 +17,103 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded request bo
 // --- Firestore Initialization ---
 const firestore = new Firestore({
     keyFilename: path.join(__dirname, 'config/serviceAccountKey.json'),
-    // projectId: 'your-gcp-project-id' // Nếu không được tự động nhận diện
 });
+
+// --- JWT Configuration ---
+const JWT_SECRET = '7e8e8af6ef903726fe2cc3f47d13bd57';
+
+function generateToken(user) {
+    return jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '1h' });
+}
 
 // --- API Routes ---
 
+// Endpoint để đăng ký người dùng mới
+app.post('/api/users/register', async (req, res) => {
+    try {
+        const { fullName, email, password } = req.body;
+
+        if (!fullName || !email || !password) {
+            return res.status(400).send({ message: 'Please provide full name, email, and password.' });
+        }
+
+        // Check if user already exists
+        const userQuery = await firestore.collection('users').where('email', '==', email).limit(1).get();
+        if (!userQuery.empty) {
+            return res.status(400).send({ message: 'User with this email already exists.' });
+        }
+
+        // Hash password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        const newUser = {
+            fullName,
+            email,
+            password: hashedPassword,
+            createdAt: Timestamp.now(),
+            // role: 'candidate' // Optional: default role
+        };
+
+        const docRef = await firestore.collection('users').add(newUser);
+        
+        // Don't send password back, even hashed
+        const userForToken = { id: docRef.id, email: newUser.email };
+        const token = generateToken(userForToken);
+
+        res.status(201).send({ 
+            message: 'User registered successfully!',
+            token,
+            user: { id: docRef.id, fullName: newUser.fullName, email: newUser.email }
+        });
+
+    } catch (error) {
+        console.error('Error registering user:', error);
+        res.status(500).send({ message: 'Error registering user.', error: error.message });
+    }
+});
+
+// Endpoint để đăng nhập người dùng
+app.post('/api/users/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).send({ message: 'Please provide email and password.' });
+        }
+
+        // Find user by email
+        const userQuery = await firestore.collection('users').where('email', '==', email).limit(1).get();
+        if (userQuery.empty) {
+            return res.status(401).send({ message: 'Invalid email or password.' });
+        }
+
+        const userDoc = userQuery.docs[0];
+        const userData = userDoc.data();
+
+        // Compare password
+        const isMatch = await bcrypt.compare(password, userData.password);
+        if (!isMatch) {
+            return res.status(401).send({ message: 'Invalid email or password.' });
+        }
+
+        const userForToken = { id: userDoc.id, email: userData.email };
+        const token = generateToken(userForToken);
+        
+        res.status(200).send({
+            message: 'Login successful!',
+            token,
+            user: { id: userDoc.id, fullName: userData.fullName, email: userData.email }
+        });
+
+    } catch (error) {
+        console.error('Error logging in user:', error);
+        res.status(500).send({ message: 'Error logging in user.', error: error.message });
+    }
+});
+
 // Endpoint để đăng tin tuyển dụng mới
-app.post('/api/jobs', async (req, res) => {
+app.post('/api/jobs', authenticateToken, async (req, res) => {
     try {
         const { company, position, location, salary, jobtype, description } = req.body;
 

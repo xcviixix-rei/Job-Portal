@@ -1,5 +1,63 @@
 const API_BASE_URL = 'http://localhost:8080/api';
 
+function goHome() {
+    window.location.href = "homePage.html";
+}
+
+function updateNavbar() {
+    const navLinks = document.querySelector('.nav-links');
+    if (!navLinks) return;
+
+    const user = getUser();
+
+    let loginLi = Array.from(navLinks.children).find(li => li.textContent.includes('Đăng nhập'));
+    
+    if (isLoggedIn() && user) {
+        if (loginLi) navLinks.removeChild(loginLi);
+
+        if (!document.getElementById('nav-user-info')) {
+            const userInfoLi = document.createElement('li');
+            userInfoLi.id = 'nav-user-info';
+            userInfoLi.innerHTML = `<a href="#">Chào, ${user.fullName || user.email}</a>`;
+
+            const logoutLi = document.createElement('li');
+            logoutLi.id = 'nav-logout';
+            const logoutButton = document.createElement('a');
+            logoutButton.href = '#';
+            logoutButton.textContent = 'Đăng xuất';
+            logoutButton.onclick = (e) => {
+                e.preventDefault();
+                logout();
+            };
+            logoutLi.appendChild(logoutButton);
+
+            const employerBtnLi = Array.from(navLinks.children).find(li => li.querySelector('.btn-employer'));
+            if (employerBtnLi) {
+                navLinks.insertBefore(userInfoLi, employerBtnLi);
+                navLinks.insertBefore(logoutLi, employerBtnLi);
+            } else {
+                navLinks.appendChild(userInfoLi);
+                navLinks.appendChild(logoutLi);
+            }
+        }
+    } else {
+        if (!loginLi && !document.getElementById('nav-user-info')) {
+            loginLi = document.createElement('li');
+            loginLi.innerHTML = `<a href="login.html">Đăng nhập</a>`;
+             const employerBtnLi = Array.from(navLinks.children).find(li => li.querySelector('.btn-employer'));
+            if (employerBtnLi) {
+                navLinks.insertBefore(loginLi, employerBtnLi);
+            } else {
+                navLinks.appendChild(loginLi);
+            }
+        }
+        const userInfoLi = document.getElementById('nav-user-info');
+        const logoutLi = document.getElementById('nav-logout');
+        if (userInfoLi) navLinks.removeChild(userInfoLi);
+        if (logoutLi) navLinks.removeChild(logoutLi);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('job-list-container')) {
         loadJobsFromAPI();
@@ -19,6 +77,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    if (typeof updateNavbar === "function" && typeof getUser === "function") {
+         updateNavbar();
+    } else {
+        console.warn("auth.js might not be loaded, navbar update might fail.");
+    }
+
     const jobListContainer = document.getElementById('job-list-container');
     if (jobListContainer) {
         jobListContainer.addEventListener('click', function(event) {
@@ -29,6 +93,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.location.href = `apply.html?job_title=${encodeURIComponent(jobTitle)}&job_id=${jobId}`;
                 } else {
                     window.location.href = 'apply.html';
+                }
+            } else if (event.target.classList.contains('detail-btn-card')) {
+                const jobId = event.target.dataset.jobId;
+                if (jobId) {
+                    window.location.href = `jobsDetail.html?id=${jobId}`;
+                } else {
+                    alert('Không tìm thấy ID việc làm.');
                 }
             }
         });
@@ -107,7 +178,7 @@ function renderJobs(jobsToLoad) {
         const logoUrl = job.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(job.company.substring(0,1))}&background=random&size=48`;
         jobCard.innerHTML = `
             <img src="${logoUrl}" alt="${job.company} Logo" class="company-logo">
-            <h3><a href="job-details.html?id=${job.id}" style="text-decoration:none; color:inherit;">${job.position}</a></h3>
+            <h3>Vị trí tuyển dụng: ${job.position}</a></h3>
             <span class="company">${job.company}</span>
             <span class="location">${job.location}</span>
             <span class="salary">${job.salary || 'Thỏa thuận'}</span>
@@ -115,7 +186,10 @@ function renderJobs(jobsToLoad) {
                 <span class="tag ${getJobTypeClass(job.jobtype)}">${job.jobtype}</span>
                 ${(job.tags && Array.isArray(job.tags)) ? job.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : ''}
             </div>
-            <button class="apply-btn apply-btn-card" data-job-id="${job.id}" data-job-title="${job.position}">Ứng tuyển</button>
+            <div class="job-card-actions"> 
+                <button class="detail-btn-card" data-job-id="${job.id}">Xem chi tiết</button>
+                <button class="apply-btn apply-btn-card" data-job-id="${job.id}" data-job-title="${job.position}">Ứng tuyển</button>
+            </div>
         `;
         jobListContainer.appendChild(jobCard);
     });

@@ -56,8 +56,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 ${job.description.replace(/\n/g, '<br>')}
             </div>
             <button
-                class="apply-btn"
-                style="width:auto; margin-top: 25px; padding: 10px 25px; font-size: 1.1em;"
+                class="apply-btn-card"
                 onclick="window.location.href='apply.html?job_title=${encodeURIComponent(job.position)}&job_id=${job.id}'">
                 Ứng tuyển ngay
             </button>
