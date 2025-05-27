@@ -1,0 +1,18 @@
+runtime: nodejs20
+service: backend
+
+instance_class: F1
+
+env_variables:
+  NODE_ENV: "production"
+  JWT_SECRET: '7e8e8af6ef903726fe2cc3f47d13bd57'
+
+handlers:
+- url: /api/.*
+  script: auto
+  secure: always
+
+automatic_scaling:
+  min_instances: 0
+  max_instances: 2
+  target_cpu_utilization: 0.65

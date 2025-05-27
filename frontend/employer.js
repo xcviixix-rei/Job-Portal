@@ -1,16 +1,16 @@
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = '/api';
 
 function goHome() {
     window.location.href = "homePage.html";
 }
 
-const token = getToken();
+// const token = getToken();
 
-if (!token) {
-    alert("Bạn cần đăng nhập để đăng tin!");
-    window.location.href = 'login.html';
-    return;
-}
+// if (!token) {
+//     alert("Bạn cần đăng nhập để đăng tin!");
+//     window.location.href = 'login.html';
+//     return;
+// }
 
 document.getElementById("employerForm").addEventListener("submit", async function(e) {
     e.preventDefault();
@@ -31,7 +31,7 @@ document.getElementById("employerForm").addEventListener("submit", async functio
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                // 'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify(jobData),
         });

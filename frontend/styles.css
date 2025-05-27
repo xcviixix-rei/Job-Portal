@@ -100,14 +100,12 @@ body {
     color: #2062ad;
 }
 
-.apply-btn-card,
-.apply-button {
+.apply-btn-card {
     background: #2062ad;
     color: #fff;
 }
 
-.apply-btn-card:hover,
-.apply-button:hover {
+.apply-btn-card:hover {
     background: #ffd65b;
     color: #2062ad;
 }
@@ -383,7 +381,7 @@ body {
     font-size: 1em;
 }
 
-.profile-btn, .post-btn {
+.profile-btn, .post-btn, .apply-btn {
     padding: 8px 22px;
     border-radius: 19px;
     background: #2062ad;
@@ -394,7 +392,7 @@ body {
     transition: background 0.18s;
 }
 
-.profile-btn:hover, .post-btn:hover {
+.profile-btn:hover, .post-btn:hover, .apply-btn:hover {
     background: #ffd65b;
     color: #2062ad;
 }

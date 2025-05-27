@@ -1,0 +1,16 @@
+runtime: python312
+service: default
+
+handlers:
+- url: /
+  static_files: homePage.html
+  upload: homePage.html
+
+- url: /(.*\.(html|css|js|png|jpg|jpeg|gif|ico|json|webmanifest))$
+  static_files: \1
+  upload: .*\.(html|css|js|png|jpg|jpeg|gif|ico|json|webmanifest)$
+
+- url: /.*
+  static_files: homePage.html
+  upload: homePage.html
+  secure: always

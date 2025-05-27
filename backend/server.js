@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded request bo
 
 // --- Firestore Initialization ---
 const firestore = new Firestore({
-    keyFilename: path.join(__dirname, 'config/serviceAccountKey.json'),
+    // keyFilename: path.join(__dirname, 'config/serviceAccountKey.json'),
 });
 
 // --- JWT Configuration ---
@@ -113,7 +113,7 @@ app.post('/api/users/login', async (req, res) => {
 });
 
 // Endpoint để đăng tin tuyển dụng mới
-app.post('/api/jobs', authenticateToken, async (req, res) => {
+app.post('/api/jobs', async (req, res) => {
     try {
         const { company, position, location, salary, jobtype, description } = req.body;
 
